@@ -1,23 +1,28 @@
 import { Module } from '@nestjs/common';
-import { DoctorService } from './doctor.service';
-import { DoctorController } from './doctor.controller';
+
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DoctorEntity } from './entities/doctor.entity';
+
 import { Passport } from 'passport';
 import { PassportModule } from '@nestjs/passport';
 import * as dotenv from 'dotenv' ;
 import { JwtModule } from '@nestjs/jwt';
+import { UserEntity } from './entities/user.entity';
+import { UserService } from './user.service';
+import { UserController } from './user.controller';
+import { DoctorModule } from 'src/doctor/doctor.module';
+import { DoctorEntity } from 'src/doctor/entities/doctor.entity';
+
 
 
 dotenv.config()
 @Module({
-  controllers: [DoctorController],
+  controllers:  [UserController],
   imports:[
-  TypeOrmModule.forFeature([DoctorEntity]),
+  TypeOrmModule.forFeature([UserEntity]),
   PassportModule.register({defaultStrategy: 'jwt'}),
   JwtModule.register({
     secret: process.env.SECRET
    })],
-  providers: [DoctorService]
+  providers: [UserService]
 })
-export class DoctorModule {}
+export class UserModule {}

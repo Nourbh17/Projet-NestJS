@@ -3,7 +3,7 @@ import { CreateDoctorDto } from './create-doctor.dto';
 import { Type } from 'class-transformer';
 import { IsNotEmpty, IsEmail, IsStrongPassword, IsNumber, Length, IsIn, IsOptional, IsEnum } from 'class-validator';
 import { notEmpty ,length  } from 'src/Generics/error-messages' ; 
-import { DoctorRateEnum } from 'src/Enums/doctor-rate.enum';
+
 
 export class UpdateDoctorDto extends PartialType(CreateDoctorDto) {
 
@@ -34,9 +34,7 @@ export class UpdateDoctorDto extends PartialType(CreateDoctorDto) {
   visitprice: number;
 
   
-  @IsOptional()
-  @IsEnum(DoctorRateEnum)
-  rate: DoctorRateEnum;
+
 }
  
 

@@ -5,52 +5,40 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { SpecialityEntity } from './entities/speciality.entity';
 import { CreateSpecialityDto } from './dto/create-speciality.dto';
 import { UpdateSpecialityDto } from './dto/update-speciality.dto';
+import {GenericCrudService} from '../Generics/service/generic-crud.service';
 
 @Injectable()
 export class SpecialityService {
-
+  private genericcrud: GenericCrudService <SpecialityEntity> ;
   constructor(@InjectRepository(SpecialityEntity)
-        private specialityRepository : Repository<SpecialityEntity> ){}
+        private specialityRepository : Repository<SpecialityEntity> ){
+          this.genericcrud = new GenericCrudService<SpecialityEntity>(this.specialityRepository);
+        }
 
 
   async  create(createSpecialityDto: CreateSpecialityDto) :Promise<SpecialityEntity> {
-        return await this.specialityRepository.save(createSpecialityDto);
+        return  await this.genericcrud.create(createSpecialityDto);
 }
 
-  findAll() {
-    return this.specialityRepository.find() ;
-  }
+  async findAll() {
+    return await this.genericcrud.findAll() ;}
 
   async findOne(id : string) :Promise<SpecialityEntity>{
-    const speciality=await this.specialityRepository.findOne({where: {id}});
-    if (!speciality){
-       throw new NotFoundException(`id : ${id} does not exist` );
-    }
-    return speciality;
+    return await this.genericcrud.findOne(id);
 }
 
  
 async update(id: string,updateSpecialityDto: UpdateSpecialityDto): Promise<SpecialityEntity> {
-    const  newspec = await this.specialityRepository.preload({id,...updateSpecialityDto,});
-    if (newspec) {
-      return this.specialityRepository.save(newspec);
-    } else {
-      throw new NotFoundException('Speciality does not exist ');
-    }
+  return await  this.genericcrud.update(id,updateSpecialityDto)
 }
 async Softdelete( id: string) {
-  const res = await this.specialityRepository.softDelete(id);
-  if (res){
-      return { message: 'Speciality deleted' };
-  }
-  else {
-      throw new NotFoundException(`id ${id} does not exist` );
-  }
+  return await  this.genericcrud.softDelete(id);
 }
 
 
-restore(id : string){
-return this.specialityRepository.restore(id) ;
+  async restore(id : string){
+  return await  this.genericcrud.restore(id) ;
 }
   
+
 }

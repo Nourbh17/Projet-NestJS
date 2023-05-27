@@ -10,9 +10,15 @@ import { SpecialityModule } from './speciality/speciality.module';
 import { DoctorEntity } from './doctor/entities/doctor.entity';
 import { SpecialityEntity } from './speciality/entities/speciality.entity';
 
+import { PatientEntity } from './patient/entities/patient.entity';
+import { ConsultationEntity } from './consultation/entities/consultation.entity';
+import { UserEntity } from './user/entities/user.entity';
+import { UserModule } from './user/user.module';
+
+
 @Module({
   imports: [
-    DoctorModule,PatientModule,ConsultationModule,SpecialityModule,
+    DoctorModule,PatientModule,ConsultationModule,SpecialityModule,UserModule,
     TypeOrmModule.forRoot(
     {
       type: 'mysql',
@@ -21,13 +27,11 @@ import { SpecialityEntity } from './speciality/entities/speciality.entity';
       username: 'root',
       password: '',
       database: 'projet-nest',
-     entities: [DoctorEntity,SpecialityEntity],
+     entities: [DoctorEntity,SpecialityEntity,UserEntity,PatientEntity,ConsultationEntity],
      synchronize: true
     }
-    ),
-    DoctorModule,
-    ConsultationModule,
-    SpecialityModule
+    )
+    
     ],
   controllers: [AppController],
   providers: [AppService],

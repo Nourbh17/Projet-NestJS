@@ -2,9 +2,11 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { DoctorService } from './doctor.service';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { UpdateDoctorDto } from './dto/update-doctor.dto';
-import { DoctorRateEnum } from 'src/Enums/doctor-rate.enum';
 import { SearchQueryDto } from './dto/search-query.dto';
 import { DoctorEntity } from './entities/doctor.entity';
+import { UserSubscribeDto } from 'src/user/dto/user-subscribe.dto';
+import { LoginCredentialsDto } from 'src/user/dto/login-credentials.dto';
+
 
 @Controller('doctor')
 export class DoctorController {
@@ -14,17 +16,29 @@ export class DoctorController {
   create(@Body() createDoctorDto: CreateDoctorDto) {
     return this.doctorService.create(createDoctorDto);
   }
+
+ /*@Post('/subscribe')
+  register(@Body() userData: UserSubscribeDto) {
+    return this.doctorService.register(userData);
+  }
+
+  @Post('/login')
+   login( @Body() credentials: LoginCredentialsDto) {
+    return  this.doctorService.login(credentials);
+  }*/
+
+/*
   @Get('/count')
   async countDoctors(){
       return await this.doctorService.countDoctorsByRate();
-  }
+  }*/
 
-  @Get("/all")
+ /* @Get("/all")
   
-  async getTodosv2(@Query('rate') rate:DoctorRateEnum,@Query('visitprice') visitprice:string): Promise<DoctorEntity[]> {
-    const params:SearchQueryDto={rate,visitprice};
-    return this.doctorService.getDoctorsByRateOrByPrice(params);
-  }
+  async getTodosv2(@Query('visitprice') visitprice:string): Promise<DoctorEntity[]> {
+    const params:SearchQueryDto={visitprice};
+    return this.doctorService.getDoctorsByPrice(params);
+  }*/
   @Get()
   findAll() {
     return this.doctorService.findAll();

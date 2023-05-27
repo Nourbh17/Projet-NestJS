@@ -1,26 +1,49 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { Brackets, Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import {GenericCrudService} from '../Generics/service/generic-crud.service';
+import { PatientEntity } from './entities/patient.entity';
 import { CreatePatientDto } from './dto/create-patient.dto';
 import { UpdatePatientDto } from './dto/update-patient.dto';
 
+
 @Injectable()
 export class PatientService {
-  create(createPatientDto: CreatePatientDto) {
-    return 'This action adds a new patient';
+  private genericcrud: GenericCrudService <PatientEntity> ;
+
+
+  constructor(@InjectRepository(PatientEntity)
+   private patientRepository: Repository<PatientEntity>,){
+          this.genericcrud = new GenericCrudService<PatientEntity>(this.patientRepository);
+        }
+      
+  async  create(createPatientDto: CreatePatientDto) :Promise<PatientEntity> {
+      return await this.genericcrud.create(createPatientDto);
+       
+}
+
+  async findAll() {
+    return await this.genericcrud.findAll() ;
   }
 
-  findAll() {
-    return `This action returns all patient`;
-  }
+  async findOne(id : string) :Promise<PatientEntity>{
+    
+    return await this.genericcrud.findOne(id);
+}
 
-  findOne(id: number) {
-    return `This action returns a #${id} patient`;
-  }
+ 
+async update(id: string,updatePatientDto: UpdatePatientDto): Promise<PatientEntity> {
+   return await  this.genericcrud.update(id,updatePatientDto);
+}
+async Softdelete( id: string) {
+  return await  this.genericcrud.softDelete(id);
+}
 
-  update(id: number, updatePatientDto: UpdatePatientDto) {
-    return `This action updates a #${id} patient`;
-  }
 
-  remove(id: number) {
-    return `This action removes a #${id} patient`;
-  }
+  async restore(id : string){
+return await  this.genericcrud.restore(id) ;
+}
+  
+
+
 }
