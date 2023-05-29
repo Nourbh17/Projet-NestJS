@@ -4,13 +4,13 @@ import { IsOptional, Length } from 'class-validator';
 import { length } from "src/Generics/error-messages";
 
 
-export class UpdateSpecialityDto extends PartialType(CreateSpecialityDto) {
+export class FindSpecialityDto extends PartialType(CreateSpecialityDto) {
 
 @IsOptional()
-  @Length(3,10, { message: (validationData) => length(validationData) })
+  @Length(3,20, { message: (validationData) => length(validationData) })
   name: string;
 
   @IsOptional()
-  @Length(5,50, { message: (validationData) => length(validationData) })
+  @Length(5,200, { message: (validationData) => length(validationData) })
   description: string;
 }

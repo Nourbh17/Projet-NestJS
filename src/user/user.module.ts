@@ -1,28 +1,29 @@
 import { Module } from '@nestjs/common';
-
+import { UserController } from './user.controller';
+import { UserService } from './user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
-import { Passport } from 'passport';
 import { PassportModule } from '@nestjs/passport';
-import * as dotenv from 'dotenv' ;
 import { JwtModule } from '@nestjs/jwt';
 import { UserEntity } from './entities/user.entity';
-import { UserService } from './user.service';
-import { UserController } from './user.controller';
-import { DoctorModule } from 'src/doctor/doctor.module';
-import { DoctorEntity } from 'src/doctor/entities/doctor.entity';
+import { DoctorModule } from '../doctor/doctor.module';
+import { DoctorService } from '../doctor/doctor.service';
+import { DoctorEntity } from '../doctor/entities/doctor.entity';
+import { SpecialityEntity } from 'src/speciality/entities/speciality.entity';
+import { SpecialityModule } from 'src/speciality/speciality.module';
+import { SpecialityService } from 'src/speciality/speciality.service';
 
-
-
-dotenv.config()
 @Module({
-  controllers:  [UserController],
-  imports:[
-  TypeOrmModule.forFeature([UserEntity]),
-  PassportModule.register({defaultStrategy: 'jwt'}),
-  JwtModule.register({
-    secret: process.env.SECRET
-   })],
-  providers: [UserService]
+  controllers: [UserController],
+  imports: [
+    
+    TypeOrmModule.forFeature([UserEntity,SpecialityEntity,DoctorEntity]),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+    JwtModule.register({
+      secret: process.env.SECRET,
+    }),
+    DoctorModule,SpecialityModule
+  ],
+  providers: [UserService, { provide: DoctorService, useClass: DoctorService }, { provide: SpecialityService, useClass: SpecialityService }],
 })
 export class UserModule {}
+

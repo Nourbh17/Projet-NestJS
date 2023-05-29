@@ -1,7 +1,8 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { SpecialityService } from './speciality.service';
 import { CreateSpecialityDto } from './dto/create-speciality.dto';
-import { UpdateSpecialityDto } from './dto/update-speciality.dto';
+import { FindSpecialityDto } from './dto/find-speciality.dto';
+
 
 @Controller('speciality')
 export class SpecialityController {
@@ -23,13 +24,13 @@ export class SpecialityController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSpecialityDto: UpdateSpecialityDto) {
+  update(@Param('id') id: string, @Body() updateSpecialityDto: FindSpecialityDto) {
     return this.specialityService.update(id, updateSpecialityDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.specialityService.Softdelete(id);
+    return this.specialityService.softDelete(id);
   }
 
   @Patch('/restore/:id')

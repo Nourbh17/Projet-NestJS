@@ -1,31 +1,28 @@
 import { Type } from 'class-transformer';
-import { IsNotEmpty, IsEmail, IsStrongPassword, IsNumber, Length} from 'class-validator';
+import { IsNotEmpty, IsEmail, IsStrongPassword, IsNumber, Length, IsDate, IsOptional, IsEnum} from 'class-validator';
+import { RoleEnum } from 'src/Enums/role.enum';
 
 import { notEmpty ,length  } from 'src/Generics/error-messages' ; 
+import { SpecialityEntity } from 'src/speciality/entities/speciality.entity';
+import { UserSubscribeDto } from 'src/user/dto/user-subscribe.dto';
+import { UserEntity } from 'src/user/entities/user.entity';
+import { ManyToOne, OneToOne } from 'typeorm';
 
-export class CreateDoctorDto {
-  @IsNotEmpty({ message: (validationData) => notEmpty(validationData) })
-  @Length(3,10, { message: (validationData) => length(validationData) })
-  firstname: string;
+export class CreateDoctorDto extends UserSubscribeDto  {
 
-  @IsNotEmpty({ message: (validationData) => notEmpty(validationData) })
-  @Length(3,10, { message: (validationData) => length(validationData) })
-  lastname: string;
-  
 
   
-  @IsNotEmpty({ message: (validationData) => notEmpty(validationData) })
-  @IsEmail()
-  email: string;
+ /*
 
-  @IsNotEmpty({ message: (validationData) => notEmpty(validationData) })
-  @Length(8,20, { message: (validationData) => length(validationData) })
-  @IsStrongPassword()
-  password: string;
+  @IsNotEmpty({ message : 'Speciality is required for doctors.'})
+  @ManyToOne(
+    type => SpecialityEntity,
+    (speciality)=> speciality.doctors ,
+   )
+   speciality :SpecialityEntity ;*/
 
-
-  @IsNotEmpty({ message: (validationData) => notEmpty(validationData) })
-  @Type(() => Number )
+  @IsOptional()
+  @Type(() => Number)
   @IsNumber()
   visitprice: number;
 

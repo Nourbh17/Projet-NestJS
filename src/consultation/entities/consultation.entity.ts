@@ -1,7 +1,6 @@
-import {  PatientEntity } from '../../patient/entities/patient.entity';
-import {  DoctorEntity } from '../../doctor/entities/doctor.entity';
 import { Column,Entity,ManyToOne,PrimaryGeneratedColumn,} from 'typeorm';
 import { TimestampEntity } from 'src/Generics/timestamp.entity';
+import { UserEntity } from 'src/user/entities/user.entity';
 
 @Entity('Consultation')
 export class ConsultationEntity extends TimestampEntity {
@@ -17,9 +16,9 @@ export class ConsultationEntity extends TimestampEntity {
   @Column()
   acceptee: boolean;
 
-  @ManyToOne((type) => DoctorEntity, (doctor) => doctor.consultations)
-  doctor: DoctorEntity;
+  @ManyToOne((type) => UserEntity, (doctor) => doctor.consultations)
+  doctor: UserEntity;
 
-  @ManyToOne((type) => PatientEntity, (patient) => patient.consultations)
-  patient: PatientEntity;
+  @ManyToOne((type) => UserEntity, (patient) => patient.consultations)
+  patient: UserEntity;
 }

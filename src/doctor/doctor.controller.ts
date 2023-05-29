@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ValidationPipe, UsePipes } from '@nestjs/common';
 import { DoctorService } from './doctor.service';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { UpdateDoctorDto } from './dto/update-doctor.dto';
@@ -6,44 +6,25 @@ import { SearchQueryDto } from './dto/search-query.dto';
 import { DoctorEntity } from './entities/doctor.entity';
 import { UserSubscribeDto } from 'src/user/dto/user-subscribe.dto';
 import { LoginCredentialsDto } from 'src/user/dto/login-credentials.dto';
+import { UserEntity } from 'src/user/entities/user.entity';
 
 
 @Controller('doctor')
 export class DoctorController {
   constructor(private readonly doctorService: DoctorService) {}
-
+  
   @Post()
   create(@Body() createDoctorDto: CreateDoctorDto) {
     return this.doctorService.create(createDoctorDto);
   }
 
- /*@Post('/subscribe')
-  register(@Body() userData: UserSubscribeDto) {
-    return this.doctorService.register(userData);
-  }
-
-  @Post('/login')
-   login( @Body() credentials: LoginCredentialsDto) {
-    return  this.doctorService.login(credentials);
-  }*/
-
-/*
-  @Get('/count')
-  async countDoctors(){
-      return await this.doctorService.countDoctorsByRate();
-  }*/
-
- /* @Get("/all")
   
-  async getTodosv2(@Query('visitprice') visitprice:string): Promise<DoctorEntity[]> {
-    const params:SearchQueryDto={visitprice};
-    return this.doctorService.getDoctorsByPrice(params);
-  }*/
-  @Get()
+
+ 
+  @Get('/get')
   findAll() {
     return this.doctorService.findAll();
   }
-
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.doctorService.findOne(id);
@@ -56,11 +37,11 @@ export class DoctorController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.doctorService.Softdelete(id);
+    return this.doctorService.softDelete(id);
   }
 
   @Patch('/restore/:id')
-    restoreTodo(@Param('id') id : string){
+    restore(@Param('id') id : string){
         return this.doctorService.restore(id) ;
     }
 

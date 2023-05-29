@@ -1,7 +1,7 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateDoctorDto } from './create-doctor.dto';
 import { Type } from 'class-transformer';
-import { IsNotEmpty, IsEmail, IsStrongPassword, IsNumber, Length, IsIn, IsOptional, IsEnum } from 'class-validator';
+import { IsNotEmpty, IsEmail, IsStrongPassword, IsNumber, Length, IsIn, IsOptional, IsEnum, IsDate } from 'class-validator';
 import { notEmpty ,length  } from 'src/Generics/error-messages' ; 
 
 
@@ -16,6 +16,9 @@ export class UpdateDoctorDto extends PartialType(CreateDoctorDto) {
   @Length(3,10, { message: (validationData) => length(validationData) })
   lastname: string;
   
+  @IsOptional()
+  
+  birthdate: Date;
 
   
   @IsOptional()
@@ -24,7 +27,7 @@ export class UpdateDoctorDto extends PartialType(CreateDoctorDto) {
 
   @IsOptional()
   @Length(8,20, { message: (validationData) => length(validationData) })
-  @IsStrongPassword()
+  
   password: string;
 
 
