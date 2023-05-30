@@ -13,8 +13,8 @@ export class UserController {
 register(@Body() userData: UserSubscribeDto) {
   return this.userService.register(userData);
 }
-/*@Post('/login')
+@Post('/login')
 login( @Body() credentials: LoginCredentialsDto) {
  return  this.userService.login(credentials);
-}*/
+}
 }

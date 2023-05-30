@@ -32,15 +32,11 @@ export class ConsultationController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.consultationService.Softdelete(id);
+    return this.consultationService.softDelete(id);
   }
 
   @Patch('/restore/:id')
-    restoreTodo(@Param('id') id : string){
-        return this.consultationService.restore(id) ;
-    }
-
-   
-
-
+  restore(@Param('id') id: string) {
+    return this.consultationService.restore(id);
+  }
 }

@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsNotEmpty, IsEmail, IsStrongPassword, IsNumber, Length, IsDate, IsOptional, IsEnum} from 'class-validator';
+import { IsNotEmpty, IsEmail, IsStrongPassword, IsNumber, Length, IsDate, IsOptional, IsEnum, IsDefined, ValidateIf} from 'class-validator';
 import { RoleEnum } from 'src/Enums/role.enum';
 
 import { notEmpty ,length  } from 'src/Generics/error-messages' ; 
@@ -11,21 +11,22 @@ import { ManyToOne, OneToOne } from 'typeorm';
 export class CreateDoctorDto extends UserSubscribeDto  {
 
 
-  
- /*
-
-  @IsNotEmpty({ message : 'Speciality is required for doctors.'})
+  @ValidateIf( o => o.role === RoleEnum.DOCTOR)
   @ManyToOne(
     type => SpecialityEntity,
     (speciality)=> speciality.doctors ,
-   )
-   speciality :SpecialityEntity ;*/
+  )
+  @IsDefined({message : 'Speciality is required for doctors.'})
+               
+  speciality :SpecialityEntity ;
+  
 
-  @IsOptional()
+  @IsNotEmpty()
   @Type(() => Number)
   @IsNumber()
   visitprice: number;
-
+@IsOptional()
+image : string;
 
   
 }

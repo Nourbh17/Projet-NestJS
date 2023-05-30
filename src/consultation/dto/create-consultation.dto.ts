@@ -3,14 +3,13 @@ import { IsBoolean, IsDate, IsNotEmpty } from "class-validator";
 export class CreateConsultationDto {
   
   @IsNotEmpty()
-  
   channel: string;
 
-  @IsDate()
+  @IsNotEmpty()
   date : Date; 
 
-
-  @IsBoolean()
+  
+  @IsNotEmpty()
   acceptee: boolean;
 
 }

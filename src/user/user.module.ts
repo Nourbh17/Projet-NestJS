@@ -8,22 +8,26 @@ import { UserEntity } from './entities/user.entity';
 import { DoctorModule } from '../doctor/doctor.module';
 import { DoctorService } from '../doctor/doctor.service';
 import { DoctorEntity } from '../doctor/entities/doctor.entity';
-import { SpecialityEntity } from 'src/speciality/entities/speciality.entity';
-import { SpecialityModule } from 'src/speciality/speciality.module';
-import { SpecialityService } from 'src/speciality/speciality.service';
+import { SpecialityEntity } from '../speciality/entities/speciality.entity';
+import { SpecialityModule } from '../speciality/speciality.module';
+import { SpecialityService } from '../speciality/speciality.service';
 
 @Module({
   controllers: [UserController],
   imports: [
-    
-    TypeOrmModule.forFeature([UserEntity,SpecialityEntity,DoctorEntity]),
+    TypeOrmModule.forFeature([UserEntity, SpecialityEntity, DoctorEntity]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: process.env.SECRET,
     }),
-    DoctorModule,SpecialityModule
+    DoctorModule,
+    SpecialityModule,
   ],
-  providers: [UserService, { provide: DoctorService, useClass: DoctorService }, { provide: SpecialityService, useClass: SpecialityService }],
+  providers: [
+    UserService,
+    { provide: DoctorService, useClass: DoctorService },
+    { provide: SpecialityService, useClass: SpecialityService },
+  ],
 })
 export class UserModule {}
 

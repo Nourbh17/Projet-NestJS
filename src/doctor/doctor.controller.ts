@@ -7,6 +7,7 @@ import { DoctorEntity } from './entities/doctor.entity';
 import { UserSubscribeDto } from 'src/user/dto/user-subscribe.dto';
 import { LoginCredentialsDto } from 'src/user/dto/login-credentials.dto';
 import { UserEntity } from 'src/user/entities/user.entity';
+import { FindSpecialityDto } from 'src/speciality/dto/find-speciality.dto';
 
 
 @Controller('doctor')
@@ -19,9 +20,12 @@ export class DoctorController {
   }
 
   
-
+  @Get('/speciality')
+  FindDoctorsBySpeciality(@Body() spec: FindSpecialityDto,): Promise<DoctorEntity[]> {
+    return this.doctorService.FindDoctorsBySpeciality(spec);
+  }
  
-  @Get('/get')
+  @Get()
   findAll() {
     return this.doctorService.findAll();
   }

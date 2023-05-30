@@ -21,6 +21,11 @@ export class SpecialityService extends GenericCrudService<SpecialityEntity> {
     return this.specialityRepository.save(newSpeciality);
 }
 
- 
+async getSpeciality(spec: string): Promise<SpecialityEntity> {
+  return await this.specialityRepository
+    .createQueryBuilder('speciality')
+    .where('speciality.name = :name', { name: spec })
+    .getOne();
+}
 
 }

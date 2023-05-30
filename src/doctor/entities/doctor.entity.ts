@@ -13,6 +13,15 @@ export class DoctorEntity extends UserEntity {
 
   @Column()
   visitprice: number;
+  @Column()
+  image : string;
 
+  @OneToMany(
+    (type) => ConsultationEntity,
+    (consultations) => consultations.patient,
+    { cascade: true, eager: true },
+  )
+  consultations: ConsultationEntity[];
+ 
   
 }

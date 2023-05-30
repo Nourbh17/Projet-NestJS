@@ -44,12 +44,25 @@ export class GenericCrudService<Entity > {
     return this.repository.find();
   }
 
+ 
+
   async findOne(id): Promise<Entity> {
-    const element = await this.repository.findOne({ where: id });
+    const element = await this.repository
+      .createQueryBuilder('s')
+      .where('s.id = :id', { id: id })
+      .getOne();
+
     if (!element) {
       throw new NotFoundException('id not found');
     }
     return element;
+  }
+  
+  async findOneByMail(mail): Promise<Entity> {
+    return await this.repository
+      .createQueryBuilder('s')
+      .where('s.email = :mail', { mail: mail })
+      .getOne();
   }
 
 }

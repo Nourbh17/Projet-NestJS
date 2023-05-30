@@ -25,7 +25,7 @@ export class UserService extends GenericCrudService<UserEntity> {
     private readonly doctorService: DoctorService,
     @InjectRepository(SpecialityEntity)
     private specialityRepository: Repository<SpecialityEntity>,
-   /* private doctorRepository: Repository<DoctorEntity>,*/
+    
     
   ) { super(userRepository);}
   
@@ -73,60 +73,30 @@ export class UserService extends GenericCrudService<UserEntity> {
     };
   }
 
-  /*async login(credentials: LoginCredentialsDto) {
+  async login(credentials: LoginCredentialsDto) {
     const { email, password } = credentials;
-    const user = await this.userRepository
-      .createQueryBuilder('users')
-      .where('users.email = :email', { email })
-      .getOne();
-      
-      const doctor =this.doctorRepository
-      .createQueryBuilder('doctors')
-      .where('doctors.email = :email', { email })
-      .getOne()
-  ;
-    if (!user && !doctor) throw new NotFoundException('username or password incorrect');
-    if(user){
-                 const hashedPassword = await bcrypt.hash(password, user.salt);
-                 if (hashedPassword === user.password) {
-                    const payload = {
-                     id: user.id,
-                      role: user.role,
-                      authentificated: true,
-                         };
-                      const jwt = await this.jwtService.sign(payload);
-                      return {
-                       access_token: jwt,
-        };
-      }
-                  else {
-                     throw new NotFoundException('username or password incorrect');
-                     }
+    const user = await this.findOneByMail(email);
+    const doctor = await this.doctorService.findOneByMail(email);
+    if (!user && !doctor)
+      throw new NotFoundException('username or password incorrect');
+    if (user) {
+      return this.IsLogged(password, user);
+    } else {
+      return this.IsLogged(password, doctor);
     }
-   else{
-
-            const hashedPassword = await bcrypt.hash(password, doctor.salt);
-            if (hashedPassword === doctor.password) {
-               const payload = {
-                  id:  doctor.id,
-                  role: doctor.role,
-                  authentificated: true,
-                      };
-            const jwt = await this.jwtService.sign(payload);
-            return {
-              access_token: jwt,
-               };
-                }
-            else {
-              throw new NotFoundException('username or password incorrect');
-              }
-   }
-    
-    
-   
-
-
-
-    
-  }*/
+  }
+  async IsLogged(password: string, user: UserEntity) {
+    const hashedPassword = await bcrypt.hash(password, user.salt);
+    if (hashedPassword === user.password) {
+      const payload = {
+        id: user.id,
+        role: user.role,
+        authentificated: true,
+      };
+      const jwt = await this.jwtService.sign(payload);
+      return { access_token: jwt };
+    } else {
+      throw new NotFoundException('username or password incorrect');
+    }
+  }
 }
