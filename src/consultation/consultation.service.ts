@@ -9,10 +9,13 @@ import { ConsultationEntity } from './entities/consultation.entity';
 import { CreateConsultationDto } from './dto/create-consultation.dto';
 import { UpdateConsultationDto } from './dto/update-consultation.dto';
 import { RtcTokenBuilder, RtcRole } from "agora-token";
+import { PubSub } from 'graphql-subscriptions';
+import { log } from 'console';
 
 
 @Injectable()
 export class ConsultationService extends GenericCrudService<ConsultationEntity> {
+  pubSub: PubSub ;
   constructor(
     @InjectRepository(ConsultationEntity)
     private consultationRepository: Repository<ConsultationEntity>,
@@ -51,20 +54,21 @@ export class ConsultationService extends GenericCrudService<ConsultationEntity> 
       throw new NotFoundException(" can't find id ")
     }
     con.acceptee = 1 ;
-    con.date = accept.date;
+    con.date = new Date(accept.date) ;
     const q = this.consultationRepository.save(con);
     if ( !q){
       throw new NotFoundException ("couldn't update date ");
     }
-   const token = this.generateToken(con,accept.date);
-    return con ;
+    //this.pubSub.publish('consultationAccepted', { consultationAccepted: q });
+    return this.generateToken(con);
+    
   }
   // get (id : string){
   //   const con = await this.findOne(id);
   //   const patient = this.userRepositor
   // }
 
- generateToken (con : ConsultationEntity,date : Date ) : string {
+ generateToken (con : ConsultationEntity) {
     // Rtc Examples
     const appId = '579dcf9764df40d2b0d5dd2571e659b1';
     const appCertificate = 'e879ef0eca834e24b5a05edd4729e717';
@@ -75,13 +79,17 @@ export class ConsultationService extends GenericCrudService<ConsultationEntity> 
   
     const expirationTimeInSeconds = 86400 ;
   
-    const timestamp = date.getSeconds();
-    // const timestamp = Math.floor((date.getTime() - Date.now())/1000); 
+    const timestamp = con.date.getSeconds();
+    // const timestamp = Math.floor((con.date.getTime() - Date.now())/1000); 
     const currentTimestamp = Math.floor(Date.now() / 1000);
     const privilegeExpiredTs = timestamp + expirationTimeInSeconds;
  
     // Build token with user account
-    return RtcTokenBuilder.buildTokenWithUserAccount(appId, appCertificate, channelName, userAccount, role,timestamp, privilegeExpiredTs);
-    
-  }
+    const token = RtcTokenBuilder.buildTokenWithUserAccount(appId, appCertificate, channelName, userAccount, role,timestamp, privilegeExpiredTs);
+    return {
+      "token" : token ,
+      "appId" : appId,
+      'channelName' : channelName
+    }
+ }
 }

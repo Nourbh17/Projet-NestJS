@@ -12,6 +12,7 @@ import { UserEntity } from './user/entities/user.entity';
 import { UserModule } from './user/user.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver,ApolloDriverConfig } from "@nestjs/apollo";
+import { PubSub } from 'graphql-subscriptions';
 @Module({
   imports: [
     DoctorModule,
@@ -39,6 +40,7 @@ import { ApolloDriver,ApolloDriverConfig } from "@nestjs/apollo";
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: 'schema.gql',
+      // subscriptions :   ,
       context: ({ req }) => ({ req }),
     }),
   ],

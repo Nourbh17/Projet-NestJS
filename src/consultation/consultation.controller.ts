@@ -14,9 +14,12 @@ import { ConsultationService } from './consultation.service';
 import { CreateConsultationDto } from './dto/create-consultation.dto';
 import { UpdateConsultationDto } from './dto/update-consultation.dto';
 
+
 @Controller('consultation')
 export class ConsultationController {
-  constructor(private readonly consultationService: ConsultationService) {}
+  constructor(private readonly consultationService: ConsultationService,
+    
+    ) {}
 
   @Post()
   create(@Body() createConsultationDto: CreateConsultationDto) {
@@ -56,4 +59,5 @@ export class ConsultationController {
   restore(@Param('id') id: string) {
     return this.consultationService.restore(id);
   }
+
 }
