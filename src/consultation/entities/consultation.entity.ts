@@ -1,6 +1,7 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { TimestampEntity } from 'src/Generics/timestamp.entity';
-import { UserEntity } from 'src/user/entities/user.entity';
+import { Column, Entity, IsNull, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { TimestampEntity } from '../../Generics/timestamp.entity';
+import { UserEntity } from '../../user/entities/user.entity';
+import { DoctorEntity } from '../../doctor/entities/doctor.entity';
 
 @Entity('consultation')
 export class ConsultationEntity extends TimestampEntity {
@@ -10,14 +11,14 @@ export class ConsultationEntity extends TimestampEntity {
   @Column()
   channel: String;
 
-  @Column()
-  date: Date;
+  @Column({default : null})
+  date: Date = null;
 
-  @Column()
-  acceptee: boolean;
+  @Column({default : 0})
+  acceptee: number ;
 
-  @ManyToOne((type) => UserEntity, (doctor) => doctor.consultations)
-  doctor: UserEntity;
+  @ManyToOne((type) => DoctorEntity, (doctor) => doctor.consultations)
+  doctor: DoctorEntity;
 
   @ManyToOne((type) => UserEntity, (patient) => patient.consultations)
   patient: UserEntity;

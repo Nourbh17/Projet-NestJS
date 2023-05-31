@@ -1,5 +1,6 @@
 import {
   ConflictException,
+  HttpException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -25,9 +26,21 @@ export class ConsultationService extends GenericCrudService<ConsultationEntity> 
     return await this.consultationRepository.save(createConsultationDto);
   }
 
-  async accept(id : string,accept : UpdateConsultationDto){
+  async accept(id : string,accept : UpdateConsultationDto) {
     const con = await this.findOne(id);
-    con.acceptee = true ;
+    if(!con){
+      throw new NotFoundException(" can't find id ")
+    }
+    con.acceptee = 1 ;
     con.date = accept.date;
+    const q = this.consultationRepository.save(con);
+    if ( !q){
+      throw new NotFoundException ("couldn't update date ");
+    }
+    return con ;
   }
+  // get (id : string){
+  //   const con = await this.findOne(id);
+  //   const patient = this.userRepositor
+  // }
 }

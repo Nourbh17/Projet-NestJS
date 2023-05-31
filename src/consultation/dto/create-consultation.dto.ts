@@ -4,9 +4,4 @@ export class CreateConsultationDto {
   @IsNotEmpty()
   channel: string;
 
-  @IsDate()
-  date: Date;
-
-  @IsBoolean()
-  acceptee: boolean;
 }

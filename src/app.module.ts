@@ -27,7 +27,7 @@ import { ConfigModule } from '@nestjs/config';
       port: 3306,
       username: 'root',
       password: '',
-      database: 'projetnest',
+      database: 'projet-nest',
       entities: [
         DoctorEntity,
         SpecialityEntity,
