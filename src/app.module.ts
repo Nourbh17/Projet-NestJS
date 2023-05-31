@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AppService, FooResolver } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DoctorModule } from './doctor/doctor.module';
 import { ConsultationModule } from './consultation/consultation.module';
@@ -10,8 +10,8 @@ import { SpecialityEntity } from './speciality/entities/speciality.entity';
 import { ConsultationEntity } from './consultation/entities/consultation.entity';
 import { UserEntity } from './user/entities/user.entity';
 import { UserModule } from './user/user.module';
-import { ConfigModule } from '@nestjs/config';
-
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver,ApolloDriverConfig } from "@nestjs/apollo";
 @Module({
   imports: [
     DoctorModule,
@@ -36,8 +36,13 @@ import { ConfigModule } from '@nestjs/config';
       ],
       synchronize: true,
     }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: 'schema.gql',
+      context: ({ req }) => ({ req }),
+    }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService , FooResolver],
 })
 export class AppModule {}
