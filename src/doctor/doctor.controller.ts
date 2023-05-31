@@ -40,6 +40,8 @@ export class DoctorController {
   findAll() {
     return this.doctorService.findAll();
   }
+  
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.doctorService.findOne(id);

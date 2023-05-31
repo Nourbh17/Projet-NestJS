@@ -9,7 +9,7 @@ export class ConsultationEntity extends TimestampEntity {
   id: String;
 
   @Column()
-  channel: String;
+  channel: string;
 
   @Column({default : null})
   date: Date = null;
